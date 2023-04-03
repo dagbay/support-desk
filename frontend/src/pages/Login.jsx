@@ -1,6 +1,7 @@
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { FaSignInAlt } from "react-icons/fa";
+import { FaSignInAlt, FaUser } from "react-icons/fa";
 import { Helmet } from "react-helmet";
 
 function Login() {
@@ -67,6 +68,14 @@ function Login() {
             Login
           </button>
         </form>
+        <div className="flex justify-center items-center my-5 gap-5">
+          <Link to="/forgot-password" className="btn btn-ghost">
+            Forgot Password
+          </Link>
+          <Link to="/register" className="btn btn-ghost">
+            Create account
+          </Link>
+        </div>
       </div>
     </>
   );

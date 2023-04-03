@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { FaUser } from "react-icons/fa";
@@ -100,6 +101,11 @@ function Register() {
             Register
           </button>
         </form>
+        <div className="flex justify-center items-center my-5 gap-5">
+          <Link to="/login" className="btn btn-ghost">
+            Already Have an Account?
+          </Link>
+        </div>
       </div>
     </>
   );
