@@ -33,7 +33,7 @@ function Register() {
     }
 
     dispatch(reset());
-  }, [isError, isSuccess, user, message, navigate, dispatch, navigate]);
+  }, [isError, isSuccess, user, message, dispatch, navigate]);
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
