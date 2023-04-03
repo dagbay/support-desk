@@ -1,0 +1,75 @@
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { FaSignInAlt } from "react-icons/fa";
+import { Helmet } from "react-helmet";
+
+function Login() {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const { email, password } = formData;
+
+  const onChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    toast.success("Login successful!");
+  };
+
+  return (
+    <>
+      <Helmet>
+        <title>Support Desk - Login</title>
+      </Helmet>
+      <div className="section mx-auto w-22">
+        <div className="flex items-center justify-center h-full text-primary font-bold text-7xl gap-5">
+          <FaSignInAlt />
+          <h1>Login</h1>
+        </div>
+        <div className="text-center text-4xl mt-5">
+          <p>Please login to get support</p>
+        </div>
+
+        <form onSubmit={onSubmit} className="flex flex-col items-center mt-8">
+          <div className="w-80">
+            <div className="mb-4 w-full">
+              <input
+                type="text"
+                id="email"
+                name="email"
+                value={email}
+                onChange={onChange}
+                placeholder="Email"
+                className="input input-bordered w-full max-w-xs"
+                required
+              />
+            </div>
+
+            <div className="mb-4 w-full">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                value={password}
+                onChange={onChange}
+                placeholder="Password"
+                className="input input-bordered w-full max-w-xs"
+                required
+              />
+            </div>
+          </div>
+
+          <button type="submit" className="btn btn-outline btn-primary w-80">
+            Login
+          </button>
+        </form>
+      </div>
+    </>
+  );
+}
+
+export default Login;
