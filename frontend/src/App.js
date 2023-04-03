@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 // Components
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import PrivateRoute from "./components/PrivateRoute";
 
 // Pages
 import Home from "./pages/Home";
@@ -19,7 +20,9 @@ function App() {
           <Header />
           <div className="my-56 mx-5">
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<PrivateRoute />}>
+                <Route path="/" element={<Home />} />
+              </Route>
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
             </Routes>
