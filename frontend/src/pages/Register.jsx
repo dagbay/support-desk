@@ -30,11 +30,10 @@ function Register() {
 
     if (isSuccess || user) {
       navigate("/");
-      toast.success("Registration successful");
     }
 
     dispatch(reset());
-  }, [isError, isSuccess, user, message, dispatch, formData]);
+  }, [isError, isSuccess, user, message, dispatch, formData, navigate]);
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
