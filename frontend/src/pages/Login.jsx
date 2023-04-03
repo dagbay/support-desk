@@ -1,10 +1,10 @@
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { FaSignInAlt, FaUser } from "react-icons/fa";
 import { Helmet } from "react-helmet";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../features/auth/authSlice";
+import { login, reset } from "../features/auth/authSlice";
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -12,12 +12,27 @@ function Login() {
     password: "",
   });
 
+  const navigate = useNavigate();
+
   const { email, password } = formData;
 
   const dispatch = useDispatch();
-  const { user, isLoading, isSuccess, message } = useSelector(
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
   );
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+
+    if (isSuccess || user) {
+      navigate("/");
+      toast.success("Registration successful");
+    }
+
+    dispatch(reset());
+  }, [isError, isSuccess, user, message, navigate, dispatch]);
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -31,8 +46,6 @@ function Login() {
     };
 
     dispatch(login(userData));
-
-    toast.success("Login successful!");
   };
 
   return (
