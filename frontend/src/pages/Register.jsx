@@ -1,10 +1,10 @@
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { FaUser } from "react-icons/fa";
 import { Helmet } from "react-helmet";
 import { useDispatch, useSelector } from "react-redux";
-import { register } from "../features/auth/authSlice";
+import { register, reset } from "../features/auth/authSlice";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -14,12 +14,27 @@ function Register() {
     password2: "",
   });
 
+  const navigate = useNavigate();
+
   const { name, email, password, password2 } = formData;
 
   const dispatch = useDispatch();
-  const { user, isLoading, isSuccess, message } = useSelector(
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
   );
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+
+    if (isSuccess || user) {
+      navigate("/");
+      toast.success("Registration successful");
+    }
+
+    dispatch(reset());
+  }, [isError, isSuccess, user, message, dispatch, formData]);
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -36,9 +51,7 @@ function Register() {
         email,
         password,
       };
-
       dispatch(register(userData));
-      toast.success("Registration successful!");
     }
   };
 

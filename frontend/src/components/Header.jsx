@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import { FiSun } from "react-icons/fi";
 import { FaMoon } from "react-icons/fa";
 import { FaSignInAlt, FaSignOutAlt, FaUser } from "react-icons/fa";
+import { RiAccountCircleFill } from "react-icons/ri";
 import { MdOutlineSupportAgent } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function Header() {
   const [lightMode, setLightMode] = useState(true);
@@ -13,6 +15,8 @@ function Header() {
     setLightMode(!lightMode);
     setTheme(lightMode ? "light" : "night");
   };
+
+  const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     document.querySelector("html").setAttribute("data-theme", theme);
@@ -44,16 +48,30 @@ function Header() {
             </div>
             <div className="divider divider-horizontal" />
             <li>
-              <Link to="/login">
-                <FaSignInAlt />
-                Login
-              </Link>
+              {user ? (
+                <Link to="/login">
+                  <RiAccountCircleFill />
+                  Account
+                </Link>
+              ) : (
+                <Link to="/login">
+                  <FaSignInAlt />
+                  Login
+                </Link>
+              )}
             </li>
             <li>
-              <Link to="/register">
-                <FaUser />
-                Register
-              </Link>
+              {user ? (
+                <Link to="/logout">
+                  <FaSignOutAlt />
+                  Logout
+                </Link>
+              ) : (
+                <Link to="/register">
+                  <FaUser />
+                  Register
+                </Link>
+              )}
             </li>
           </ul>
         </div>
