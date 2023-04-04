@@ -5,6 +5,7 @@ import { FaSignInAlt, FaUser } from "react-icons/fa";
 import { Helmet } from "react-helmet";
 import { useDispatch, useSelector } from "react-redux";
 import { login, reset } from "../features/auth/authSlice";
+import Loading from "../components/Loading";
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -28,7 +29,6 @@ function Login() {
 
     if (isSuccess || user) {
       navigate("/");
-      toast.success("Registration successful");
     }
 
     dispatch(reset());
@@ -47,6 +47,10 @@ function Login() {
 
     dispatch(login(userData));
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <>

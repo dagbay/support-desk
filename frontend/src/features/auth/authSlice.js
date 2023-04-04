@@ -8,7 +8,7 @@ const initialState = {
   user: user ? user : null,
   isError: false,
   isSuccess: false,
-  isLoading: true,
+  isLoading: false,
   message: "",
 };
 
@@ -88,6 +88,9 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
+        state.user = null;
+      })
+      .addCase(logout.fulfilled, (state) => {
         state.user = null;
       });
   },
