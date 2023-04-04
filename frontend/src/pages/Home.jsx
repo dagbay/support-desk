@@ -2,19 +2,15 @@ import { Link } from "react-router-dom";
 import { FaQuestionCircle, FaTicketAlt } from "react-icons/fa";
 import { Helmet } from "react-helmet";
 import { useSelector } from "react-redux";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import Loading from "../components/Loading";
 
 function Home() {
-  const { user } = useSelector((state) => state.auth);
-  const [name, setName] = useState(user.name);
+  const { isLoading } = useSelector((state) => state.auth);
 
-  const getFirstName = () => {
-    setName(user.name.split(" ")[0]);
-  };
-
-  useEffect(() => {
-    getFirstName();
-  }, []);
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -23,7 +19,7 @@ function Home() {
       </Helmet>
       <div className="text-center">
         <h1 className="text-primary font-bold text-5xl mb-5">
-          What do you need help with {name}?
+          What do you need help with?
         </h1>
         <p>Please choose from an option below</p>
         <div className="max-w-lg mx-auto mt-5">

@@ -4,19 +4,28 @@ import { FaMoon } from "react-icons/fa";
 import { FaSignInAlt, FaSignOutAlt, FaUser } from "react-icons/fa";
 import { RiAccountCircleFill } from "react-icons/ri";
 import { MdOutlineSupportAgent } from "react-icons/md";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { logout, reset } from "../features/auth/authSlice";
 
 function Header() {
   const [lightMode, setLightMode] = useState(true);
   const [theme, setTheme] = useState("night");
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+
+  const onLogout = () => {
+    dispatch(logout());
+    dispatch(reset());
+    navigate("/");
+  };
+
   const onToggle = () => {
     setLightMode(!lightMode);
     setTheme(lightMode ? "light" : "night");
   };
-
-  const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     document.querySelector("html").setAttribute("data-theme", theme);
@@ -49,7 +58,7 @@ function Header() {
             <div className="divider divider-horizontal" />
             <li>
               {user ? (
-                <Link to="/login">
+                <Link to="/my-account">
                   <RiAccountCircleFill />
                   Account
                 </Link>
@@ -62,10 +71,10 @@ function Header() {
             </li>
             <li>
               {user ? (
-                <Link to="/logout">
+                <div onClick={onLogout}>
                   <FaSignOutAlt />
                   Logout
-                </Link>
+                </div>
               ) : (
                 <Link to="/register">
                   <FaUser />
