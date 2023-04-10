@@ -1,11 +1,13 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
+import { useAuthStatus } from "../hooks/useAuthStatus";
+import Loading from "./Loading";
 
 const PrivateRoute = () => {
-  const { user } = useSelector((state) => state.auth);
+  const { loggedIn, checkingStatus } = useAuthStatus();
 
-  return user ? <Outlet /> : <Navigate to="/login" />;
+  if (checkingStatus) return <Loading />;
+
+  return loggedIn ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export default PrivateRoute;
