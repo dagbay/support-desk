@@ -11,6 +11,11 @@ import PrivateRoute from "./components/PrivateRoute";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import NewTicket from "./pages/NewTicket";
+import MyTickets from "./pages/MyTickets";
+import MyAccount from "./pages/MyAccount";
+import NotFound from "./pages/NotFound";
+import ForgotPassword from "./pages/ForgotPassword";
 
 function App() {
   return (
@@ -20,11 +25,21 @@ function App() {
           <Header />
           <div className="my-56 mx-5">
             <Routes>
-              <Route path="/" element={<PrivateRoute />}>
-                <Route path="/" element={<Home />} />
+              <Route path="/" element={<Home />} />
+              <Route path="/new-ticket" element={<PrivateRoute />}>
+                <Route path="/new-ticket" element={<NewTicket />} />
+              </Route>
+              <Route path="/my-tickets" element={<PrivateRoute />}>
+                <Route path="/my-tickets" element={<MyTickets />} />
+              </Route>
+              <Route path="/my-account" element={<PrivateRoute />}>
+                <Route path="/my-account" element={<MyAccount />} />
               </Route>
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/notfound" element={<NotFound />} />
+              <Route path="/*" element={<NotFound />} />
             </Routes>
           </div>
         </div>
