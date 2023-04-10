@@ -62,7 +62,7 @@ function Register() {
   return (
     <>
       <Helmet>
-        <title>Support Desk - Register</title>
+        <title>Ticketr - Register</title>
       </Helmet>
       <div className="section mx-auto w-22">
         <div className="flex items-center justify-center h-full text-primary font-bold text-7xl gap-5">

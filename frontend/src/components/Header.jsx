@@ -40,7 +40,7 @@ function Header() {
             className="btn btn-ghost normal-case text-3xl my-5 gap-3 font-bold"
           >
             <MdOutlineSupportAgent />
-            Support Desk
+            Ticketr
           </Link>
         </div>
         <div className="flex-none">

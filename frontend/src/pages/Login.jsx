@@ -55,7 +55,7 @@ function Login() {
   return (
     <>
       <Helmet>
-        <title>Support Desk - Login</title>
+        <title>Ticketr - Login</title>
       </Helmet>
       <div className="section mx-auto w-22">
         <div className="flex items-center justify-center h-full text-primary font-bold text-7xl gap-5">

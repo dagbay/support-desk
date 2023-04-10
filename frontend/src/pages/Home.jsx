@@ -15,7 +15,7 @@ function Home() {
   return (
     <>
       <Helmet>
-        <title>Support Desk - Home</title>
+        <title>Ticketr - Home</title>
       </Helmet>
       <div className="text-center">
         <h1 className="text-primary font-bold text-5xl mb-5">
