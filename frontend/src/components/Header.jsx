@@ -28,12 +28,14 @@ function Header() {
   };
 
   useEffect(() => {
-    document.querySelector("html").setAttribute("data-theme", theme);
+    const htmlElement = document.querySelector("html");
+    htmlElement.style.transition = "background-color 0.5s ease";
+    htmlElement.setAttribute("data-theme", theme);
   }, [theme]);
 
   return (
     <>
-      <div className="navbar bg-base-100">
+      <div className="navbar">
         <div className="flex-1">
           <Link
             to="/"

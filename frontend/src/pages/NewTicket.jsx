@@ -1,35 +1,70 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { createTicket, reset } from "../features/tickets/ticketSlice";
 import { Helmet } from "react-helmet";
+import Loading from "../components/Loading";
+import BackButton from "../components/BackButton";
 
 function NewTicket() {
   const { user } = useSelector((state) => state.auth);
+  const { isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.ticket
+  );
+
+  const dispatch = useDispatch(() => {});
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
-    product: "",
+    product: "iPhone",
     description: "",
   });
 
   const { product, description } = formData;
   const { name, email } = user;
 
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+
+    if (isSuccess) {
+      toast.success(message);
+      dispatch(reset());
+      navigate("/my-tickets");
+    }
+
+    dispatch(reset());
+  }, [dispatch, isError, isSuccess, message, navigate]);
+
   const onSubmit = (e) => {
     e.preventDefault();
+    dispatch(createTicket({ product, description }));
   };
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <>
       <Helmet>
         <title>Ticketr - New Ticket</title>
       </Helmet>
+      <BackButton url="/" />
+
       <div className="text-center">
         <h1 className="text-primary font-bold text-5xl mb-5">
-          What's the problem?
+          Create New Ticket
         </h1>
+        <p>Please fill out the form below</p>
       </div>
-      <form onSubmit={onSubmit} className="flex flex-col items-center mt-8">
+
+      <form onSubmit={onSubmit} className="flex flex-col items-center mt-5">
         <div className="w-80">
           <div className="mb-4 w-full">
             <label className="label">
