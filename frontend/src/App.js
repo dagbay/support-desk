@@ -23,7 +23,7 @@ function App() {
       <Router>
         <div className="mx-5">
           <Header />
-          <div className="my-56 mx-5">
+          <div className="my-10 mx-5">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/new-ticket" element={<PrivateRoute />}>
