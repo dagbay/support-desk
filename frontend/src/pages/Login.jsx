@@ -60,7 +60,7 @@ function Login() {
         <div className="section mx-auto w-22">
           <div className="flex items-center justify-center h-full text-primary font-bold text-7xl gap-5">
             <FaSignInAlt />
-            <h1>Login</h1>
+            <h1 className="mb-3">Login</h1>
           </div>
           <div className="text-center text-4xl mt-5">
             <p>Please login to get support</p>

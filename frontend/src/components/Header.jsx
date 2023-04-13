@@ -67,7 +67,7 @@ function Header() {
               ) : (
                 <Link to="/login">
                   <FaSignInAlt />
-                  Login
+                  <p className="mb-1">Login</p>
                 </Link>
               )}
             </li>
