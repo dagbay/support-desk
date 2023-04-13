@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import { FaSignInAlt, FaUser } from "react-icons/fa";
+import { FaSignInAlt } from "react-icons/fa";
 import { Helmet } from "react-helmet";
 import { useDispatch, useSelector } from "react-redux";
 import { login, reset } from "../features/auth/authSlice";
@@ -25,13 +25,12 @@ function Login() {
   useEffect(() => {
     if (isError) {
       toast.error(message);
+      dispatch(reset());
     }
 
     if (isSuccess || user) {
       navigate("/");
     }
-
-    dispatch(reset());
   }, [isError, isSuccess, user, message, navigate, dispatch]);
 
   const onChange = (e) =>

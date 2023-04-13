@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { FaQuestionCircle, FaTicketAlt } from "react-icons/fa";
 import { Helmet } from "react-helmet";
 import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
 import Loading from "../components/Loading";
 
 function Home() {
