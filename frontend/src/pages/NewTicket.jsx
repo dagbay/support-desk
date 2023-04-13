@@ -10,7 +10,7 @@ import BackButton from "../components/BackButton";
 function NewTicket() {
   const { user } = useSelector((state) => state.auth);
   const { isLoading, isError, isSuccess, message } = useSelector(
-    (state) => state.ticket
+    (state) => state.tickets
   );
 
   const dispatch = useDispatch(() => {});
@@ -27,6 +27,7 @@ function NewTicket() {
   useEffect(() => {
     if (isError) {
       toast.error(message);
+      dispatch(reset());
     }
 
     if (isSuccess) {
@@ -34,8 +35,6 @@ function NewTicket() {
       dispatch(reset());
       navigate("/my-tickets");
     }
-
-    dispatch(reset());
   }, [dispatch, isError, isSuccess, message, navigate]);
 
   const onSubmit = (e) => {
@@ -55,7 +54,10 @@ function NewTicket() {
       <Helmet>
         <title>Ticketr - New Ticket</title>
       </Helmet>
-      <BackButton url="/" />
+
+      <div className="mb-10">
+        <BackButton url="/" />
+      </div>
 
       <div className="text-center">
         <h1 className="text-primary font-bold text-5xl mb-5">

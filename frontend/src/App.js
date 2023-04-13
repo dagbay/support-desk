@@ -16,6 +16,7 @@ import MyTickets from "./pages/MyTickets";
 import MyAccount from "./pages/MyAccount";
 import NotFound from "./pages/NotFound";
 import ForgotPassword from "./pages/ForgotPassword";
+import Ticket from "./pages/Ticket";
 
 function App() {
   return (
@@ -34,6 +35,9 @@ function App() {
               </Route>
               <Route path="/my-account" element={<PrivateRoute />}>
                 <Route path="/my-account" element={<MyAccount />} />
+              </Route>
+              <Route path="/ticket/:ticketId" element={<PrivateRoute />}>
+                <Route path="/ticket/:ticketId" element={<Ticket />} />
               </Route>
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
