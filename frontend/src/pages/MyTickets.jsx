@@ -62,7 +62,7 @@ function MyTickets() {
               </thead>
               <tbody>
                 {tickets.map((ticket) => (
-                  <TicketItem ticket={ticket} />
+                  <TicketItem key={ticket._id} ticket={ticket} />
                 ))}
               </tbody>
             </table>
