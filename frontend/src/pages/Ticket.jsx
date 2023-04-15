@@ -1,22 +1,21 @@
 import { useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
-import { getTicket } from "../features/tickets/ticketSlice";
+import { useParams, useNavigate } from "react-router-dom";
+import { getTicket, closeTicket } from "../features/tickets/ticketSlice";
 import { Helmet } from "react-helmet";
 
 import BackButton from "../components/BackButton";
 import Loading from "../components/Loading";
 
 function Ticket() {
-  const { ticket, isLoading, isSuccess, isError, message } = useSelector(
+  const { ticket, isLoading, isError, message } = useSelector(
     (state) => state.tickets
   );
 
+  const navigate = useNavigate();
   const { ticketId } = useParams();
-
   const dispatch = useDispatch();
-
   let status = useRef("");
 
   useEffect(() => {
@@ -24,23 +23,29 @@ function Ticket() {
       toast.error(message);
     }
 
-    if (isSuccess) {
-      dispatch(getTicket(ticketId));
-      switch (ticket.status) {
-        case "New":
-          status.current = "info";
-          break;
-        case "Open":
-          status.current = "success";
-          break;
-        case "Closed":
-          status.current = "error";
-          break;
-        default:
-          break;
-      }
-    }
-  }, [isError, isSuccess, message, ticketId, dispatch, ticket.status]);
+    dispatch(getTicket(ticketId));
+    // eslint-disable-next-line
+  }, [isError, message, ticketId]);
+
+  const onTicketClose = () => {
+    dispatch(closeTicket(ticketId));
+    toast.success("Ticket Closed");
+    navigate("/my-tickets");
+  };
+
+  switch (ticket.status) {
+    case "New":
+      status.current = "info";
+      break;
+    case "Open":
+      status.current = "success";
+      break;
+    case "Closed":
+      status.current = "error";
+      break;
+    default:
+      break;
+  }
 
   if (isError) {
     return (
@@ -56,6 +61,8 @@ function Ticket() {
       </div>
     );
   }
+
+  console.log(status.current);
 
   if (isLoading) {
     return <Loading />;
@@ -82,7 +89,7 @@ function Ticket() {
             </h3>
           </div>
           <div className={`badge badge-${status.current}`}>
-            <p className="mx-3">{ticket.status}</p>
+            <p>{ticket.status}</p>
           </div>
         </div>
         <div className="divider mt-3"></div>
@@ -101,6 +108,16 @@ function Ticket() {
             </div>
           </div>
         </div>
+
+        {ticket.status !== "Closed" && (
+          <button
+            type="button"
+            className="btn btn-error btn-block mt-5"
+            onClick={onTicketClose}
+          >
+            <p className="font-bold">Close Ticket</p>
+          </button>
+        )}
       </div>
     </>
   );
