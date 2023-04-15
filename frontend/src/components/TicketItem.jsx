@@ -23,7 +23,7 @@ function TicketItem({ ticket }) {
       <td>{ticket.product}</td>
       <td>
         <div className={`badge badge-${status}`}>
-          <p className="mx-3">{ticket.status}</p>
+          <p>{ticket.status}</p>
         </div>
       </td>
       <td>
