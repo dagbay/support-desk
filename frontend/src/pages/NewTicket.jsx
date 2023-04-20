@@ -13,7 +13,7 @@ function NewTicket() {
     (state) => state.tickets
   );
 
-  const dispatch = useDispatch(() => {});
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -44,10 +44,6 @@ function NewTicket() {
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
-  if (isLoading) {
-    return <Loading />;
-  }
 
   return (
     <>

@@ -5,7 +5,7 @@ const initialState = {
   tickets: [],
   ticket: {},
   isError: false,
-  isLoading: false,
+  isLoading: true,
   isSuccess: false,
   message: "",
 };

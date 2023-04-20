@@ -19,6 +19,7 @@ function Header() {
   const onLogout = () => {
     dispatch(logout());
     dispatch(reset());
+    window.location.reload(true);
     navigate("/");
   };
 

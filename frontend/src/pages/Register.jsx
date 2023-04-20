@@ -30,9 +30,12 @@ function Register() {
     }
 
     if (isSuccess || user) {
-      navigate("/");
+      navigate("/login");
     }
+
     dispatch(reset());
+
+    // eslint-disable-next-line
   }, [isError, isSuccess, user, message, dispatch, navigate]);
 
   const onChange = (e) =>
