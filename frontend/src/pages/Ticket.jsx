@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
-import { getTicket, closeTicket } from "../features/tickets/ticketSlice";
+import { getTicket, closeTicket, reset } from "../features/tickets/ticketSlice";
 import { Helmet } from "react-helmet";
 
 import BackButton from "../components/BackButton";
@@ -23,7 +23,9 @@ function Ticket() {
       toast.error(message);
     }
 
+    dispatch(reset());
     dispatch(getTicket(ticketId));
+
     // eslint-disable-next-line
   }, [isError, message, ticketId]);
 
@@ -61,8 +63,6 @@ function Ticket() {
       </div>
     );
   }
-
-  console.log(status.current);
 
   if (isLoading) {
     return <Loading />;
