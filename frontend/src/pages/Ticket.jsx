@@ -3,14 +3,23 @@ import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { getTicket, closeTicket, reset } from "../features/tickets/ticketSlice";
+import { getNotes, reset as notesReset } from "../features/notes/noteSlice";
 import { Helmet } from "react-helmet";
+import { BiPlus } from "react-icons/bi";
+import { HiLockClosed } from "react-icons/hi";
 
 import BackButton from "../components/BackButton";
 import Loading from "../components/Loading";
+import NoteItem from "../components/NoteItem";
+import NewNote from "../components/NewNote";
 
 function Ticket() {
   const { ticket, isLoading, isError, message } = useSelector(
     (state) => state.tickets
+  );
+
+  const { notes, isLoading: notesIsLoading } = useSelector(
+    (state) => state.notes
   );
 
   const navigate = useNavigate();
@@ -23,8 +32,8 @@ function Ticket() {
       toast.error(message);
     }
 
-    dispatch(reset());
     dispatch(getTicket(ticketId));
+    dispatch(getNotes(ticketId));
 
     // eslint-disable-next-line
   }, [isError, message, ticketId]);
@@ -64,7 +73,7 @@ function Ticket() {
     );
   }
 
-  if (isLoading) {
+  if (isLoading || notesIsLoading) {
     return <Loading />;
   }
 
@@ -109,15 +118,44 @@ function Ticket() {
           </div>
         </div>
 
+        {notes.length > 0 ? (
+          <div>
+            <div className="divider mt-3"></div>
+            <div className="flex flex-row justify-between">
+              <h1 className="text-primary font-bold text-4xl items-start">
+                Notes
+              </h1>
+              <label htmlFor="my-modal" className="btn btn-success gap-2">
+                <BiPlus size={20} />
+                Create A Note
+              </label>
+            </div>
+          </div>
+        ) : (
+          <label
+            htmlFor="my-modal"
+            className="btn btn-success btn-block mt-3 gap-2"
+          >
+            <BiPlus size={20} />
+            Create A Note
+          </label>
+        )}
+
+        {notes.map((note) => (
+          <NoteItem key={note._id} note={note} />
+        ))}
+
         {ticket.status !== "Closed" && (
           <button
             type="button"
-            className="btn btn-error btn-block mt-5"
+            className="btn btn-error btn-block mt-3 gap-2"
             onClick={onTicketClose}
           >
-            <p className="font-bold">Close Ticket</p>
+            <HiLockClosed />
+            <p>Close Ticket</p>
           </button>
         )}
+        <NewNote />
       </div>
     </>
   );
