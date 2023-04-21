@@ -12,7 +12,7 @@ const addNote = async (noteData, tickedId, token) => {
 
   const response = await axios.post(
     `${API_URL}/${tickedId}/notes`,
-    noteData,
+    { text: noteData },
     config
   );
 
