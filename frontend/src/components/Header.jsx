@@ -6,11 +6,13 @@ import { RiAccountCircleFill } from "react-icons/ri";
 import { MdOutlineSupportAgent } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { logout, reset } from "../features/auth/authSlice";
+import { logout } from "../features/auth/authSlice";
 
 function Header() {
-  const [lightMode, setLightMode] = useState(true);
-  const [theme, setTheme] = useState("night");
+  const [lightMode, setLightMode] = useState(
+    localStorage.getItem("theme") === "light" ? true : false
+  );
+  const [theme, setTheme] = useState(localStorage.getItem("theme"));
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -18,20 +20,20 @@ function Header() {
 
   const onLogout = () => {
     dispatch(logout());
-    dispatch(reset());
-    window.location.reload(true);
-    navigate("/");
+    navigate("/login");
   };
 
   const onToggle = () => {
+    const newTheme = lightMode ? "night" : "light";
     setLightMode(!lightMode);
-    setTheme(lightMode ? "light" : "night");
+    setTheme(newTheme);
   };
 
   useEffect(() => {
+    localStorage.setItem("theme", theme);
     const htmlElement = document.querySelector("html");
-    htmlElement.style.transition = "background-color 0.5s ease";
     htmlElement.setAttribute("data-theme", theme);
+    htmlElement.style.transition = "background-color 0.5s ease";
   }, [theme]);
 
   return (
@@ -53,38 +55,43 @@ function Header() {
               <input
                 type="checkbox"
                 className="toggle toggle-md"
-                checked={lightMode}
+                checked={!lightMode}
                 onChange={onToggle}
               />
               <FaMoon />
             </div>
             <div className="divider divider-horizontal" />
-            <li>
-              {user ? (
-                <Link to="/my-account">
-                  <RiAccountCircleFill />
-                  Account
-                </Link>
-              ) : (
-                <Link to="/login">
-                  <FaSignInAlt />
-                  <p className="mb-1">Login</p>
-                </Link>
-              )}
-            </li>
-            <li>
-              {user ? (
-                <div onClick={onLogout}>
-                  <FaSignOutAlt />
-                  Logout
-                </div>
-              ) : (
-                <Link to="/register">
-                  <FaUser />
-                  Register
-                </Link>
-              )}
-            </li>
+            {user ? (
+              <>
+                <li>
+                  <Link to="/my-account">
+                    <RiAccountCircleFill />
+                    Account
+                  </Link>
+                </li>
+                <li>
+                  <button onClick={onLogout}>
+                    <FaSignOutAlt />
+                    Logout
+                  </button>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link to="/login">
+                    <FaSignInAlt />
+                    <p className="mb-1">Login</p>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/register">
+                    <FaUser />
+                    Register
+                  </Link>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import authService from "./authService";
 
 // Get user from local storage
@@ -31,8 +31,9 @@ export const register = createAsyncThunk(
   }
 );
 
-export const logout = createAsyncThunk("auth/logout", async () => {
-  return await authService.logout();
+export const logout = createAction("auth/logout", () => {
+  authService.logout();
+  return {};
 });
 
 // Login user
@@ -53,7 +54,9 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    reset: () => initialState,
+    logout: (state) => {
+      state.user = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -69,7 +72,6 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
-        state.user = null;
       })
       .addCase(login.pending, (state) => {
         state.isLoading = true;
@@ -83,13 +85,8 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
-        state.user = null;
-      })
-      .addCase(logout.fulfilled, (state) => {
-        state.user = null;
       });
   },
 });
 
-export const { reset } = authSlice.actions;
 export default authSlice.reducer;

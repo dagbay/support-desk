@@ -1,6 +1,6 @@
+import Spinner from "./assets/spinner.gif";
+
 function Loading() {
-  return (
-    <progress className="flex progress progress-secondary w-56 mx-auto items-center"></progress>
-  );
+  return <img src={Spinner} alt="Loading..." className="mx-auto" />;
 }
 export default Loading;

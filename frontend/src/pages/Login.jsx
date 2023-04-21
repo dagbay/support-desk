@@ -1,10 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import { FaSignInAlt } from "react-icons/fa";
 import { Helmet } from "react-helmet";
 import { useDispatch, useSelector } from "react-redux";
-import { login, reset } from "../features/auth/authSlice";
+import { login } from "../features/auth/authSlice";
 import Loading from "../components/Loading";
 
 function Login() {
@@ -13,28 +13,19 @@ function Login() {
     password: "",
   });
 
-  const navigate = useNavigate();
-
   const { email, password } = formData;
 
   const dispatch = useDispatch();
-  const { user, isLoading, isError, isSuccess, message } = useSelector(
-    (state) => state.auth
-  );
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (isError) {
-      toast.error(message);
-      dispatch(reset());
-    }
+  const { isLoading } = useSelector((state) => state.auth);
 
-    if (isSuccess || user) {
-      navigate("/");
-    }
-  }, [isError, isSuccess, user, message, navigate, dispatch]);
-
-  const onChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const onChange = (e) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -44,7 +35,13 @@ function Login() {
       password,
     };
 
-    dispatch(login(userData));
+    dispatch(login(userData))
+      .unwrap()
+      .then((user) => {
+        toast.success(`Logged in as ${user.name}`);
+        navigate("/");
+      })
+      .catch(toast.error);
   };
 
   if (isLoading) {

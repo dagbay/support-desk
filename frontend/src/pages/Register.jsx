@@ -1,10 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import { FaUser } from "react-icons/fa";
 import { Helmet } from "react-helmet";
 import { useDispatch, useSelector } from "react-redux";
-import { register, reset } from "../features/auth/authSlice";
+import { register } from "../features/auth/authSlice";
 import Loading from "../components/Loading";
 
 function Register() {
@@ -15,31 +15,18 @@ function Register() {
     password2: "",
   });
 
-  const navigate = useNavigate();
-
   const { name, email, password, password2 } = formData;
 
   const dispatch = useDispatch();
-  const { user, isLoading, isError, isSuccess, message } = useSelector(
-    (state) => state.auth
-  );
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (isError) {
-      toast.error(message);
-    }
-
-    if (isSuccess || user) {
-      navigate("/login");
-    }
-
-    dispatch(reset());
-
-    // eslint-disable-next-line
-  }, [isError, isSuccess, user, message, dispatch, navigate]);
+  const { isLoading } = useSelector((state) => state.auth);
 
   const onChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -53,7 +40,13 @@ function Register() {
         email,
         password,
       };
-      dispatch(register(userData));
+      dispatch(register(userData))
+        .unwrap()
+        .then((user) => {
+          toast.success(`Registered new user - ${user.name}`);
+          navigate("/");
+        })
+        .catch(toast.error);
     }
   };
 
